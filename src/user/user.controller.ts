@@ -7,13 +7,17 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @Post('/signup')
-  createUser(@Body() userCredentialsDto: UserCredentialsDto) {
+  createUser(
+    @Body() userCredentialsDto: UserCredentialsDto,
+  ): Promise<{ message: string }> {
     return this.userService.createUser(userCredentialsDto);
   }
 
   @Post('/signin')
   @HttpCode(200)
-  signIn(@Body() userCredentialsDto: UserCredentialsDto) {
+  signIn(
+    @Body() userCredentialsDto: UserCredentialsDto,
+  ): Promise<{ access_token: string }> {
     return this.userService.signIn(userCredentialsDto);
   }
 }
