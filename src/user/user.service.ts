@@ -47,6 +47,8 @@ export class UserService {
   }
 
   async findOneByUsername(username: string): Promise<User> {
-    return await this.userRepository.findOne({ username });
+    const user = await this.userRepository.findOne({ username });
+    delete user.password;
+    return user;
   }
 }
