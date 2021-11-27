@@ -1,6 +1,13 @@
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BeforeInsert,
+  Column,
+  Entity,
+  ManyToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
+import { Car } from '../cars/car.entity';
 
 @Entity()
 export class User {
@@ -21,4 +28,10 @@ export class User {
       throw new InternalServerErrorException();
     }
   }
+
+  @ManyToMany((type) => Car, (car) => car.users, {
+    cascade: true,
+    eager: true,
+  })
+  cars: Car[];
 }
