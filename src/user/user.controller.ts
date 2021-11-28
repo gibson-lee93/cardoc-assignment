@@ -3,10 +3,10 @@ import {
   Controller,
   Get,
   HttpCode,
+  Param,
   Post,
   UseGuards,
 } from '@nestjs/common';
-import { GetUser } from '../auth/get-user.decorator';
 import { JwtAuthGuard } from '../auth/auth-guard/jwt-auth.guard';
 import { UserCredentialsDto } from './dto/user-credentials.dto';
 import { User } from './user.entity';
@@ -17,9 +17,9 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get()
-  findOneByUsername(@GetUser() user: User) {
-    return this.userService.findOneByUsername(user.username);
+  @Get('/:username')
+  findOneByUsername(@Param('username') username: string): Promise<User> {
+    return this.userService.findOneByUsername(username);
   }
 
   @Post('/signup')
@@ -35,5 +35,11 @@ export class UserController {
     @Body() userCredentialsDto: UserCredentialsDto,
   ): Promise<{ access_token: string }> {
     return this.userService.signIn(userCredentialsDto);
+  }
+
+  @Post('/ownership')
+  @HttpCode(200)
+  userCarOwnership(@Body() body): Promise<{ message: string }> {
+    return this.userService.userCarOwnhership(body);
   }
 }

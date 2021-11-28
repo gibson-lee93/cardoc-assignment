@@ -9,6 +9,7 @@ import { UserCredentialsDto } from './dto/user-credentials.dto';
 import { User } from './user.entity';
 import * as bcrypt from 'bcrypt';
 import { AuthService } from '../auth/auth.service';
+import { CarsService } from '../cars/cars.service';
 
 @Injectable()
 export class UserService {
@@ -16,6 +17,7 @@ export class UserService {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private authService: AuthService,
+    private carsService: CarsService,
   ) {}
 
   async createUser(
@@ -48,7 +50,38 @@ export class UserService {
 
   async findOneByUsername(username: string): Promise<User> {
     const user = await this.userRepository.findOne({ username });
+    if (!user) {
+      throw new BadRequestException(
+        `해당 username:${username}의 자동차 정보가 존재하지 않습니다`,
+      );
+    }
     delete user.password;
     return user;
+  }
+
+  async userCarOwnhership(body): Promise<{ message: string }> {
+    if (Object.keys(body).length > 5) {
+      throw new BadRequestException(
+        '최대 5명까지의 사용자에 대한 요청을 받을 수 있습니다.',
+      );
+    }
+
+    for (const element of body) {
+      await this.assignUserCar(element.username, element.trimId);
+    }
+
+    return { message: '성공적으로 저장하였습니다.' };
+  }
+
+  async assignUserCar(username: string, trimId: number): Promise<void> {
+    const user = await this.findOneByUsername(username);
+    const car = await this.carsService.getCarById(trimId);
+    user.cars.push(car);
+
+    try {
+      await this.userRepository.save(user);
+    } catch (error) {
+      throw new InternalServerErrorException();
+    }
   }
 }
