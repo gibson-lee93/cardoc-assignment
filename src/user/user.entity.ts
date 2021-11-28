@@ -2,6 +2,7 @@ import {
   BeforeInsert,
   Column,
   Entity,
+  JoinTable,
   ManyToMany,
   PrimaryGeneratedColumn,
 } from 'typeorm';
@@ -33,5 +34,6 @@ export class User {
     cascade: true,
     eager: true,
   })
+  @JoinTable({ name: 'users_cars' })
   cars: Car[];
 }

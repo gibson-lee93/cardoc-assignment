@@ -1,4 +1,8 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  InternalServerErrorException,
+} from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Tire } from '../entities/tire.entity';
 import { Repository } from 'typeorm';
@@ -14,15 +18,25 @@ export class CarsService {
     private tireRepository: Repository<Tire>,
   ) {}
 
+  async getCarById(trimId: number): Promise<Car> {
+    const car = await this.carsRepository.findOne({ trimId });
+    if (!car) {
+      throw new BadRequestException(
+        '해당 trimId의 자동차 정보가 존재하지 않습니다',
+      );
+    }
+    return car;
+  }
+
   async createCar(createCarDto: CreateCarDto): Promise<Car> {
     const { brandName, modelName, tireSize } = createCarDto;
     const car = this.carsRepository.create({ brandName, modelName });
 
-    const tireSizes = tireSize.match(/[-+]?[0-9]+/g);
+    const tireSizes = tireSize.match(/[-+]?[0-9]+/g).map(Number);
     const tire = this.tireRepository.create({
-      width: Number(tireSizes[0]),
-      aspectRatio: Number(tireSizes[1]),
-      wheelSize: Number(tireSizes[2]),
+      width: tireSizes[0],
+      aspectRatio: tireSizes[1],
+      wheelSize: tireSizes[2],
     });
 
     try {
