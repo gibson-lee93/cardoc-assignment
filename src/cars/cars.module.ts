@@ -9,5 +9,6 @@ import { Tire } from '../entities/tire.entity';
   imports: [TypeOrmModule.forFeature([Car, Tire])],
   providers: [CarsService],
   controllers: [CarsController],
+  exports: [CarsService],
 })
 export class CarsModule {}

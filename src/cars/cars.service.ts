@@ -22,7 +22,7 @@ export class CarsService {
     const car = await this.carsRepository.findOne({ trimId });
     if (!car) {
       throw new BadRequestException(
-        '해당 trimId의 자동차 정보가 존재하지 않습니다',
+        `해당 trimId:${trimId}의 자동차 정보가 존재하지 않습니다`,
       );
     }
     return car;
