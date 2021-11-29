@@ -17,9 +17,9 @@ export class UserController {
   constructor(private userService: UserService) {}
 
   @UseGuards(JwtAuthGuard)
-  @Get('/:username')
-  findOneByUsername(@Param('username') username: string): Promise<User> {
-    return this.userService.findOneByUsername(username);
+  @Get('/:id')
+  findOneById(@Param('id') id: string): Promise<User> {
+    return this.userService.findOneById(id);
   }
 
   @Post('/signup')

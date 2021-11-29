@@ -4,7 +4,7 @@ import {
   Entity,
   JoinTable,
   ManyToMany,
-  PrimaryGeneratedColumn,
+  PrimaryColumn,
 } from 'typeorm';
 import { InternalServerErrorException } from '@nestjs/common';
 import * as bcrypt from 'bcrypt';
@@ -12,11 +12,8 @@ import { Car } from '../cars/car.entity';
 
 @Entity()
 export class User {
-  @PrimaryGeneratedColumn()
-  id: number;
-
-  @Column({ unique: true })
-  username: string;
+  @PrimaryColumn()
+  id: string;
 
   @Column()
   password: string;
