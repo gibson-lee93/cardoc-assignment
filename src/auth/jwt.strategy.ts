@@ -19,8 +19,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
   }
 
   async validate(payload: JwtPayload) {
-    const { username } = payload;
-    const user = await this.userService.findOneByUsername(username);
+    const { id } = payload;
+    const user = await this.userService.findOneById(id);
 
     if (!user) {
       throw new UnauthorizedException('올바르지 않은 토큰입니다');

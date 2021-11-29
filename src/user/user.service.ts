@@ -38,8 +38,8 @@ export class UserService {
   async signIn(
     userCredentialsDto: UserCredentialsDto,
   ): Promise<{ access_token: string }> {
-    const { username, password } = userCredentialsDto;
-    const user = await this.userRepository.findOne({ username });
+    const { id, password } = userCredentialsDto;
+    const user = await this.userRepository.findOne({ id });
 
     if (user && (await bcrypt.compare(password, user.password))) {
       return this.authService.jwtSign(user);
@@ -48,11 +48,11 @@ export class UserService {
     }
   }
 
-  async findOneByUsername(username: string): Promise<User> {
-    const user = await this.userRepository.findOne({ username });
+  async findOneById(id: string): Promise<User> {
+    const user = await this.userRepository.findOne({ id });
     if (!user) {
       throw new BadRequestException(
-        `해당 username:${username}의 자동차 정보가 존재하지 않습니다`,
+        `해당 id:${id}의 자동차 정보가 존재하지 않습니다`,
       );
     }
     delete user.password;
@@ -67,14 +67,14 @@ export class UserService {
     }
 
     for (const element of body) {
-      await this.assignUserCar(element.username, element.trimId);
+      await this.assignUserCar(element.id, element.trimId);
     }
 
     return { message: '성공적으로 저장하였습니다.' };
   }
 
-  async assignUserCar(username: string, trimId: number): Promise<void> {
-    const user = await this.findOneByUsername(username);
+  async assignUserCar(id: string, trimId: number): Promise<void> {
+    const user = await this.findOneById(id);
     const car = await this.carsService.getCarById(trimId);
     user.cars.push(car);
 
