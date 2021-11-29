@@ -85,19 +85,6 @@
 
 ---
 
-## 조원
-
-| 이름         | 외부링크                                                                                                                                        | 담당 기능                                                        |
-| ------------ | ----------------------------------------------------------------------------------------------------------------------------------------------- | ---------------------------------------------------------------- |
-| 이현준(조장) | [깃허브](https://github.com/lhj0621)/[블로그](https://supiz.tistory.com/)                                                                       | 총괄, 킥보드 대여, 반납, 이용내역 목록조회, 상세조회, 배포       |
-| 김태련       | [깃허브](https://github.com/nojamcode)/[블로그](https://velog.io/@code-link)                                                                    | 회원가입, 로그인, 인증, 이벤트 생성, 이벤트 조회                 |
-| 신영학       | [깃허브](https://github.com/yhshin0)/[블로그](https://nbkw.tistory.com/)                                                                        | 회원가입, 로그인, 인증, 유저 테스트                              |
-| 임유라       | [깃허브](https://github.com/BangleCoding)/[블로그](https://banglecoding.github.io/)                                                             | 회원가입, 로그인, 인증, 이벤트 DB설계, 초기데이터 구성           |
-| 이기범       | [깃허브](https://github.com/gibson-lee93)/[블로그](https://mysterious-laborer-518.notion.site/Gibson-s-Notion-2dd7f598fba64f1c9806cded5b4b83a0) | 킥보드 대여, 반납, 이용내역 목록조회, 상세조회, 이벤트 수정      |
-| 정진산       | [깃허브](https://github.com/chinsanchung)/[블로그](https://chinsanchung.github.io/)                                                             | 킥보드 대여, 반납, 이용내역 목록조회, 상세조회, 이벤트 조건 검증 |
-
----
-
 ## 개발 환경
 
 - 언어: TypeScript
@@ -156,101 +143,23 @@
 
 <!-- TODO -->
 
-API 테스트를 위한 방법을 [POSTMAN document](https://documenter.getpostman.com/view/15323948/UVJWqKhp)에서 확인하실 수 있습니다.
+API 테스트를 위한 방법을 [POSTMAN document](https://documenter.getpostman.com/view/14991464/UVJckc24)에서 확인하실 수 있습니다.
 
 ## 배포
 
 <!-- TODO -->
 
-Heroku를 이용해 배포를 진행했으며, 사이트의 주소는 [https://pocky-deer-subject.herokuapp.com/](https://pocky-deer-subject.herokuapp.com/) 입니다.
+Heroku를 이용해 배포를 진행했으며, 사이트의 주소는 [https://cardoc-assignment.herokuapp.com/](https://cardoc-assignment.herokuapp.com/) 입니다.
 
-## 설치 및 실행 방법
+## 로컬 설치 및 실행 방법
 
 ### 공통
-
-**로컬에서는 준비한 데이터를 활용할 수 없기 때문에 로컬 환경에서 실행은 권장하지 않습니다.**
 
 1. 최상위 폴더에 `.env` 파일에 `JWT_SECRET`에 임의의 문자열을 작성해 저장합니다.
 1. `npm install`으로 패키지를 설치합니다.
 1. 테스트
    - 개발일 경우: `npm run start`으로 `localhost:3000`에서 테스트하실 수 있습니다.
    - 배포일 경우: `npm run build`으로 애플리케이션을 빌드합니다. 그리고 `npm run start:prod`으로 실행합니다.
-1. POST `localhost:3000/user`에서 `user_id`, `password`를 입력해 유저를 생성합니다.
-1. POST `localhost:3000/user/signin`에 `user_id`, `password`을 입력하신 후 결과값으로 accessToken을 발급받습니다.
-1. 대여나 반납 등 권한이 필요한 API의 주소를 입력한 후, Headers 의 Authorization에 accessToken을 붙여넣어 권한을 얻은 후 API를 호출합니다.
-
-
-## 폴더 구조
-```
-+---src
-|   |   app.controller.spec.ts
-|   |   app.controller.ts
-|   |   app.module.ts
-|   |   app.service.ts
-|   |   main.ts
-|   |
-|   +---auth
-|   |   |   auth.module.ts
-|   |   |   auth.service.ts
-|   |   |   get-user.decorator.ts
-|   |   |
-|   |   +---auth-guard
-|   |   |       jwt-auth.guard.ts
-|   |   |
-|   |   \---strategies
-|   |           jwt.strategy.ts
-|   |
-|   +---deer
-|   |       deer.module.ts
-|   |       deer.service.ts
-|   |
-|   +---entities
-|   |       area.entity.ts
-|   |       deer.entity.ts
-|   |       event.entity.ts
-|   |       forbidden_area.entity.ts
-|   |       history.entity.ts
-|   |       parkingzone.entity.ts
-|   |       user.entity.ts
-|   |
-|   +---event
-|   |   |   event.controller.ts
-|   |   |   event.module.ts
-|   |   |   event.repository.ts
-|   |   |   event.service.ts
-|   |   |
-|   |   \---dto
-|   |           create-event.dto.ts
-|   |           update-event.dto.ts
-|   |
-|   +---history
-|   |   |   history.controller.ts
-|   |   |   history.module.ts
-|   |   |   history.repository.ts
-|   |   |   history.service.ts
-|   |   |
-|   |   \---dto
-|   |           create-history.dto.ts
-|   |           query-history.dto.ts
-|   |           update-history.dto.ts
-|   |
-|   \---user
-|       |   user.controller.ts
-|       |   user.module.ts
-|       |   user.service.spec.ts
-|       |   user.service.ts
-|       |
-|       \---dto
-|               create-user.dto.ts
-|               sign-in.dto.ts
-|   .eslintrc.js
-|   .gitignore
-|   .prettierrc
-|   nest-cli.json
-|   package-lock.json
-|   package.json
-|   Procfile
-|   README.md
-|   tsconfig.build.json
-|   tsconfig.json
-```
+1. POST `localhost:3000/user/singup`에서 `id`, `password`를 입력해 유저를 생성합니다.
+1. POST `localhost:3000/user/signin`에 `id`, `password`을 입력하신 후 결과값으로 accessToken을 발급받습니다.
+1. 사용자가 소유한 타이어 정보 저장 등 권한이 필요한 API의 주소를 입력한 후, Headers 의 Authorization에 accessToken을 붙여넣어 권한을 얻은 후 API를 호출합니다.
