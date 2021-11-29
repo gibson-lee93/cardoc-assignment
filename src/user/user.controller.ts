@@ -37,6 +37,7 @@ export class UserController {
     return this.userService.signIn(userCredentialsDto);
   }
 
+  @UseGuards(JwtAuthGuard)
   @Post('/ownership')
   @HttpCode(200)
   userCarOwnership(@Body() body): Promise<{ message: string }> {
