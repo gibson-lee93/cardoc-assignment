@@ -52,7 +52,7 @@ export class UserService {
     const user = await this.userRepository.findOne({ id });
     if (!user) {
       throw new BadRequestException(
-        `해당 id:${id}의 자동차 정보가 존재하지 않습니다`,
+        `해당 id:${id}의 유저 정보가 존재하지 않습니다`,
       );
     }
     delete user.password;
